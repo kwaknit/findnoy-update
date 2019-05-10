@@ -17,14 +17,14 @@ class CreateQuizzesTable extends Migration
             $table->increments('ID');
             $table->unsignedInteger('CategoryID');
             $table->foreign('CategoryID')->references('ID')->on('categories')->onDelete('cascade');
-            $table->unsignedInteger('CoverageID');
+            $table->unsignedInteger('CoverageID')->nullable();
             $table->foreign('CoverageID')->references('ID')->on('coverages')->onDelete('cascade');
-            $table->unsignedInteger('FocusID');
+            $table->unsignedInteger('FocusID')->nullable();
             $table->foreign('FocusID')->references('ID')->on('focuses')->onDelete('cascade');
-            $table->string('Name');
+            $table->string('Name')->unique();
             $table->tinyInteger('QuestionCount');
             $table->tinyInteger('Time');
-            $table->boolean('IsFeatured');
+            $table->boolean('IsFeatured')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

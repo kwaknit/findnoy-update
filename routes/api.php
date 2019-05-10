@@ -45,4 +45,19 @@ Route::put('quizzes/{id}', 'QuizController@update');
 Route::delete('quizzes/{id}', 'QuizController@delete');
 Route::post('quizzes/{id}', 'QuizController@restore');
 
+Route::get('questions', 'QuestionController@getMany');
+Route::get('questions/list', 'QuestionController@getSimpleList');
+Route::get('questions/{id}', 'QuestionController@getOne');
+Route::post('questions', 'QuestionController@create');
 Route::post('questions/import', 'QuestionController@import');
+Route::put('questions/{id}', 'QuestionController@update');
+Route::delete('questions/{id}', 'QuestionController@delete');
+Route::post('questions/{id}', 'QuestionController@restore');
+
+Route::get('answers', 'AnswerController@getMany');
+Route::get('answers/list', 'AnswerController@getSimpleList');
+Route::get('answers/{id}', 'AnswerController@getOne');
+Route::post('answers', 'AnswerController@create');
+Route::put('answers/{id}', 'AnswerController@update');
+Route::delete('answers/{id}', 'AnswerController@delete');
+Route::post('answers/{id}', 'AnswerController@restore');
