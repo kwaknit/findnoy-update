@@ -3,12 +3,9 @@
 namespace App;
 
 use App\Base;
-use Illuminate\Database\Eloquent\SoftDeletes;
     
 class Category extends Base
 {
-    use SoftDeletes;
-
     protected $cascadeDeletes = ['coverages'];
 
     /**

@@ -10,6 +10,13 @@ class QuestionController extends Controller
 {
     private $relationship = ['answers:ID,Name,IsCorrect,QuestionID'];
 
+    public function getMany(Request $request)
+    {
+        $paginatedResult = Question::with($this->relationship)->orderBy($request->get('sortBy'), $request->get('sortDirection'))->paginate();
+
+        return response()->json($paginatedResult);
+    }
+
     public function getOne($id)
     {
         return response()->json(Question::with($this->relationship)->findOrFail($id));
@@ -34,6 +41,21 @@ class QuestionController extends Controller
         return response()->json($data, 201);
     }
 
+    public function delete($id)
+    {
+        Question::findOrFail($id)->delete();
+        return response()->json('Deleted Successfully', 204);
+    }
+
+    public function restore($id)
+    {
+        Question::withTrashed()
+            ->findOrFail($id)
+            ->restore();
+
+        return response('Restored Successfully', 200);
+    }
+
     public function import(Request $request)
     {
         if ($request->hasFile('file'))
@@ -46,31 +68,39 @@ class QuestionController extends Controller
             {
                 if ($file->getSize() <= $maxFileSize)
                 {
-                    $data = array_map('str_getcsv', file($file));     
-                    $count = count($data);
-                    
-                    if ($data != null && $count > 0)
+                    if (($handle = fopen($file->path(), 'r')) !== FALSE)
                     {
-                        foreach ($data as $question)
+                        $counter = 0;
+
+                        while (($data = fgetcsv($handle, 1000, ',')) !== FALSE)
                         {
                             $question = Question::create([
-                                'Name' => $question[0],
-                                'CategoryID' => (int)$question[7],
+                                'Name' => trim($data[0]),
+                                'CategoryID' => (int)$data[7],
+                                'CoverageID' => (count($data) >= 9) ? (int)$data[8] : null,
+                                'FocusID' => (count($data) >= 10) ? (int)$data[9] : null,
                             ]);
 
                             for ($x = 1; $x <=5; $x++)
                             {
                                 $question->answers()->create([
-                                    'Name' => $question[$x],
-                                    'IsCorrect' => $question[$x] === $question[6]
+                                    'Name' => trim($data[$x]),
+                                    'IsCorrect' => trim($data[$x]) === trim($data[6])
                                 ]);
                             }
-                        }                        
 
-                        return response()->json("Successfully imported $count questions", 201);
-                    }
-                    
+                            $counter++;
+                        }
+
+                        fclose($handle);
+
+                        return response()->json("Successfully imported $counter questions.", 201);
+                    }                    
+                } else {
+                    return response()->json("File has exceeded the maximum filesize required.", 400);
                 }
+            } else {
+                return response()->json("File must have an extension of .csv", 400);
             }
         }
     }

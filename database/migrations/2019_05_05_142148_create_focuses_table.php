@@ -17,7 +17,7 @@ class CreateFocusesTable extends Migration
             $table->increments('ID');
             $table->unsignedInteger('CoverageID');
             $table->foreign('CoverageID')->references('ID')->on('coverages')->onDelete('cascade');
-            $table->longText('Name');
+            $table->text('Name');
             $table->softDeletes();
             $table->timestamps();
         });

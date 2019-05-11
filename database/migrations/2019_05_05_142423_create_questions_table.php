@@ -21,7 +21,7 @@ class CreateQuestionsTable extends Migration
             $table->foreign('CoverageID')->references('ID')->on('coverages')->onDelete('cascade');
             $table->unsignedInteger('FocusID')->nullable();
             $table->foreign('FocusID')->references('ID')->on('focuses')->onDelete('cascade');
-            $table->string('Name')->unique();
+            $table->text('Name');
             $table->softDeletes();
             $table->timestamps();
         });

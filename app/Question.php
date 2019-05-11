@@ -5,6 +5,8 @@ use App\Base;
 
 class Question extends Base
 {
+    protected $cascadeDeletes = ['answers'];
+
     /**
      * The attributes that are mass assignable
      * 
@@ -18,5 +20,14 @@ class Question extends Base
     public function answers()
     {
         return $this->hasMany(\App\Answer::class, 'QuestionID', 'ID');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::restoring(function($question) {
+            $question->answers()->withTrashed()->restore();
+        });
     }
 }
