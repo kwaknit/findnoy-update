@@ -13,6 +13,8 @@ class Answer extends Base
      */
     protected $fillable = ['Name', 'QuestionID', 'IsCorrect'];
 
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
+
     /**
      * Get Parent Question
      * 

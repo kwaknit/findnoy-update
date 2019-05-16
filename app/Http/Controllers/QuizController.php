@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Quiz;
+use App\QuizQuestion;
 
 class QuizController extends Controller
 {
@@ -69,5 +70,37 @@ class QuizController extends Controller
             ->restore();
 
         return response('Restored Successfully', 200);
+    }
+
+    public function getOptions()
+    {
+        $categories = \App\Category::all('ID', 'Name');
+        $coverages = \App\Coverage::all('ID', 'Name');
+        $focuses = \App\Focus::all('ID', 'Name');
+
+        return response()->json([$categories, $coverages, $focuses]);
+    }
+
+    public function getQuestions(Request $request)
+    {
+        $paginatedResult = QuizQuestion::with('question:ID,Name', 'question.answers')->where('QuizID', (int)$request->get('quizID'))->paginate();
+
+        return response()->json($paginatedResult);
+    }
+
+    public function addQuestions(Request $request)
+    {       
+        $questions = $request->QuizQuestions;
+        $count = count($questions);
+
+        QuizQuestion::insert($questions);
+
+        return response()->json("Successfully added $count questions", 201);
+    }
+
+    public function deleteQuestions($quizID, $questionID)
+    {
+        QuizQuestion::where('QuizID', (int)$quizID)->where('QuestionID', (int)$questionID)->delete();
+        return response()->json(null, 204);
     }
 }

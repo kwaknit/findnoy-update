@@ -21,8 +21,6 @@ class Quiz extends Base
      */
     protected $fillable = ['Name', 'CoverageID', 'CategoryID', 'FocusID', 'QuestionCount', 'Time', 'IsFeatured'];
 
-    protected $hidden = ['CoverageID', 'CategoryID', 'FocusID'];
-
     /**
      * Get Category
      * 

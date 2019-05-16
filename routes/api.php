@@ -39,11 +39,16 @@ Route::post('focuses/{id}', 'FocusController@restore');
 
 Route::get('quizzes', 'QuizController@getMany');
 Route::get('quizzes/list', 'QuizController@getSimpleList');
+Route::get('quizzes/option/list', 'QuizController@getOptions');
 Route::get('quizzes/{id}', 'QuizController@getOne');
 Route::post('quizzes', 'QuizController@create');
+Route::post('quizzes/{id}', 'QuizController@restore');
 Route::put('quizzes/{id}', 'QuizController@update');
 Route::delete('quizzes/{id}', 'QuizController@delete');
-Route::post('quizzes/{id}', 'QuizController@restore');
+
+Route::get('quizzes/questions', 'QuizController@getQuestions');
+Route::post('quizzes/questions', 'QuizController@addQuestions');
+Route::delete('quizzes/{quizID}/question/{questionID}', 'QuizController@deleteQuestions');
 
 Route::get('questions', 'QuestionController@getMany');
 Route::get('questions/list', 'QuestionController@getSimpleList');
