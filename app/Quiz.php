@@ -50,4 +50,14 @@ class Quiz extends Base
     {
         return $this->belongsTo(\App\Focus::class, 'FocusID', 'ID');
     }
+
+    /**
+     * Get Questions
+     * 
+     * 
+     */
+    public function questions()
+    {
+        return $this->hasMany(\App\QuizQuestion::class, 'QuizID', 'ID');
+    }
 }

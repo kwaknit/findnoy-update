@@ -14,9 +14,9 @@ class CreateQuizQuestionsTable extends Migration
     public function up()
     {
         Schema::create('quiz_questions', function (Blueprint $table) {
-            $table->unsignedInteger('QuizID');
+            $table->unsignedInteger('QuizID')->nullable();
             $table->foreign('QuizID')->references('ID')->on('quizzes')->onDelete('cascade');
-            $table->unsignedInteger('QuestionID');
+            $table->unsignedInteger('QuestionID')->nullable();
             $table->foreign('QuestionID')->references('ID')->on('questions')->onDelete('cascade');
         });
     }

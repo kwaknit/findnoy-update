@@ -19,7 +19,7 @@ class QuizController extends Controller
 
     public function getOne($id)
     {
-        return response()->json(Quiz::with($this->relationship)->findOrFail($id));
+        return response()->json(Quiz::findOrFail($id));
     }
 
     public function create(Request $request)
@@ -72,35 +72,30 @@ class QuizController extends Controller
         return response('Restored Successfully', 200);
     }
 
-    public function getOptions()
-    {
-        $categories = \App\Category::all('ID', 'Name');
-        $coverages = \App\Coverage::all('ID', 'Name');
-        $focuses = \App\Focus::all('ID', 'Name');
+    public function getQuestion($id) {
+        $quiz = QuizQuestion::with('question:ID,Name', 'question.answers')->where('QuizID', $id)->paginate();
 
-        return response()->json([$categories, $coverages, $focuses]);
+        return response()->json($quiz);
     }
 
-    public function getQuestions(Request $request)
+    public function linkQuestion($quizID, $questionID)
     {
-        $paginatedResult = QuizQuestion::with('question:ID,Name', 'question.answers')->where('QuizID', (int)$request->get('quizID'))->paginate();
+        $quiz = Quiz::findOrFail($quizID);
 
-        return response()->json($paginatedResult);
+        $quiz->questions()->create([
+            'QuizID' => $quiz->ID,
+            'QuestionID' => $questionID
+        ]);
+
+        return response()->json('Question Added', 201);
     }
 
-    public function addQuestions(Request $request)
-    {       
-        $questions = $request->QuizQuestions;
-        $count = count($questions);
-
-        QuizQuestion::insert($questions);
-
-        return response()->json("Successfully added $count questions", 201);
-    }
-
-    public function deleteQuestions($quizID, $questionID)
+    public function unlinkQuestion($quizID, $questionID)
     {
-        QuizQuestion::where('QuizID', (int)$quizID)->where('QuestionID', (int)$questionID)->delete();
+        $quiz = Quiz::findOrFail($quizID);
+
+        $quiz->questions()->where('QuestionID', (int)$questionID)->delete();
+
         return response()->json(null, 204);
     }
 }

@@ -38,17 +38,14 @@ Route::delete('focuses/{id}', 'FocusController@delete');
 Route::post('focuses/{id}', 'FocusController@restore');
 
 Route::get('quizzes', 'QuizController@getMany');
-Route::get('quizzes/list', 'QuizController@getSimpleList');
-Route::get('quizzes/option/list', 'QuizController@getOptions');
 Route::get('quizzes/{id}', 'QuizController@getOne');
+Route::get('quizzes/{id}/questions', 'QuizController@getQuestion');
 Route::post('quizzes', 'QuizController@create');
-Route::post('quizzes/{id}', 'QuizController@restore');
 Route::put('quizzes/{id}', 'QuizController@update');
 Route::delete('quizzes/{id}', 'QuizController@delete');
-
-Route::get('quizzes/questions', 'QuizController@getQuestions');
-Route::post('quizzes/questions', 'QuizController@addQuestions');
-Route::delete('quizzes/{quizID}/question/{questionID}', 'QuizController@deleteQuestions');
+Route::post('quizzes/{id}/action/restore', 'QuizController@restore');
+Route::post('quizzes/{quizID}/action/linkquestion/{questionID}', 'QuizController@linkQuestion');
+Route::delete('quizzes/{quizID}/action/unlinkquestion/{questionID}', 'QuizController@unlinkQuestion');
 
 Route::get('questions', 'QuestionController@getMany');
 Route::get('questions/list', 'QuestionController@getSimpleList');
