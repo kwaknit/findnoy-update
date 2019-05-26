@@ -5,18 +5,17 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Base;
 
-class User extends Authenticatable
+class User extends Base
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'FirstName', 'LastName', 'MobileNumber', 'EmailAddress', 'Password', 'IsTeaching', 'School', 'YearGraduated'
     ];
 
     /**
@@ -25,15 +24,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'Password',
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * Get Questions
+     * 
+     * 
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function roles()
+    {
+        return $this->hasMany(\App\UserRole::class, 'UserID', 'ID');
+    }
 }
