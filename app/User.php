@@ -5,10 +5,24 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Base;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Base
+class User extends Authenticatable implements JWTSubject
 {
+    use Notifiable, SoftDeletes, CascadeSoftDeletes;
+
+    protected $cascadeDeletes = ['user_roles'];
+    
+    protected $dates = ['deleted_at'];
+    protected $primaryKey = 'ID';
+
+    /**
+     * Override the default per page results
+     */
+    protected $perPage = 10;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,7 +38,7 @@ class User extends Base
      * @var array
      */
     protected $hidden = [
-        'Password',
+        'Password'
     ];
 
     /**
@@ -35,5 +49,15 @@ class User extends Base
     public function roles()
     {
         return $this->hasMany(\App\UserRole::class, 'UserID', 'ID');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
