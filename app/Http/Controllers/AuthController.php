@@ -33,7 +33,7 @@ class AuthController extends Controller
             'YearGraduated' => $request->YearGraduated,
         ]);
 
-        $token = auth()->login($user);
+        $token = $this->generate_token($user);
 
         return $this->respondWithToken($token);
     }
@@ -49,24 +49,15 @@ class AuthController extends Controller
 
         if ($user) {
             if (password_verify($request->Password, $user->Password)) {
-                if ($token = $this->guard()->fromUser($user)) {
+                if ($token = $this->generate_token($user)) {
                     return $this->respondWithToken($token);
                 }
             }
         } else {
-            return response()->json('Email Address or Password is invalid.', 401);
+            return response()->json(['message' => 'Email Address or Password is invalid'], 401);
         }
 
-        return response()->json('Unauthorized', 401);
-    }
-
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type'   => 'bearer',
-            'expires_in'   => auth()->factory()->getTTL() * 60
-        ]);
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
 
     /**
@@ -76,21 +67,8 @@ class AuthController extends Controller
     {
         $this->guard()->logout();
         return response()->json([
-            'status' => 'success',
-            'msg' => 'Logged out Successfully.'
+            'message' => 'Logged out Successfully.'
         ], 200);
-    }
-
-    /**
-     * Get authenticated user
-     */
-    public function user(Request $request)
-    {
-        $user = User::find(Auth::user()->id);
-        return response()->json([
-            'status' => 'success',
-            'data' => $user
-        ]);
     }
 
     /**
@@ -106,8 +84,41 @@ class AuthController extends Controller
         return response()->json(['error' => 'refresh_token_error'], 401);
     }
 
+    private function respondWithToken($token)
+    {
+        if ($this->guard()->check()) {
+            $authenticatedUser = $this->guard()->user();
+
+            return response()->json([
+                'user_info' => [
+                    'ID' => $authenticatedUser->ID,
+                    'FirstName' => $authenticatedUser->FirstName,
+                    'LastName' => $authenticatedUser->LastName,
+                    'EmailAddress' => $authenticatedUser->EmailAddress,
+                ],
+                'user_session' => [
+                    'AccessToken' => $token,
+                    'TokenType'   => 'Bearer',
+                    'ExpiresIn'   => auth()->factory()->getTTL() * 60
+                ]
+            ]);
+        }        
+    }    
+
     /**
-     * Return auth guard
+     * Generate Token
+     * 
+     * @param \App\User
+     * 
+     * @return string
+     */
+    private function generate_token(User $user)
+    {
+        return auth()->login($user);
+    }    
+
+    /**
+     * Return Auth guard
      */
     private function guard()
     {
