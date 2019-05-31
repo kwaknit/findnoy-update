@@ -52,12 +52,10 @@ class AuthController extends Controller
                 if ($token = $this->generate_token($user)) {
                     return $this->respondWithToken($token);
                 }
-            }
-        } else {
-            return response()->json(['message' => 'Email Address or Password is invalid'], 401);
-        }
+            } 
+        } 
 
-        return response()->json(['message' => 'Unauthorized'], 401);
+        return response()->json(['message' => 'Email Address or Password is invalid'], 401);
     }
 
     /**
