@@ -78,6 +78,22 @@ class QuizController extends Controller
         return response()->json($quiz);
     }
 
+    public function getQuestionID($id) {
+        $idArr = QuizQuestion::select('QuestionID')->where('QuizID', $id)->get();
+
+        $data = [];
+
+        if (count($idArr) > 0) 
+        {
+            for ($x = 0; $x < count($idArr); $x++)
+            {
+                array_push($data, $idArr[$x]->QuestionID);
+            }
+        }
+
+        return response()->json($data);
+    }
+
     public function linkQuestion($quizID, $questionID)
     {
         $quiz = Quiz::findOrFail($quizID);

@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/config/cors.php
+/config/database.php
 /storage/*.key
 /vendor
 .env

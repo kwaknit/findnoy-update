@@ -51,6 +51,7 @@ Route::prefix('v1')->group(function () {
         Route::get('quizzes', 'QuizController@getMany');
         Route::get('quizzes/{id}', 'QuizController@getOne');
         Route::get('quizzes/{id}/questions', 'QuizController@getQuestion');
+        Route::get('quizzes/{id}/questionid', 'QuizController@getQuestionID');
         Route::post('quizzes', 'QuizController@create');
         Route::put('quizzes/{id}', 'QuizController@update');
         Route::delete('quizzes/{id}', 'QuizController@delete');

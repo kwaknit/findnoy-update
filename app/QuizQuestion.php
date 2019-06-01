@@ -9,7 +9,12 @@ class QuizQuestion extends Model
 
     protected $fillable = ['QuizID', 'QuestionID'];
 
-    protected $hidden = ['QuizID', 'QuestionID'];
+    protected $hidden = ['QuizID'];
+
+    /**
+     * Override the default per page results
+     */
+    protected $perPage = 10; 
 
     /**
      * Get Question
