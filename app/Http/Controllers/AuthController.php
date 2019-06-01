@@ -85,7 +85,7 @@ class AuthController extends Controller
     private function respondWithToken($token)
     {
         if ($this->guard()->check()) {
-            $authenticatedUser = $this->guard()->user();
+            $authenticatedUser = User::with('roles.role:ID,AccessType')->findOrFail($this->guard()->id());
 
             return response()->json([
                 'user_info' => [
@@ -93,6 +93,7 @@ class AuthController extends Controller
                     'FirstName' => $authenticatedUser->FirstName,
                     'LastName' => $authenticatedUser->LastName,
                     'EmailAddress' => $authenticatedUser->EmailAddress,
+                    'AccessType' => $authenticatedUser->roles[0]->role->AccessType
                 ],
                 'user_session' => [
                     'AccessToken' => $token,

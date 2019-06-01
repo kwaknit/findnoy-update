@@ -21,7 +21,7 @@ class RoleController extends Controller
 
     public function getSimpleList()
     {
-        return response()->json(Role::all('ID', 'Name'));
+        return response()->json(Role::all('ID', 'Name', 'AccessType'));
     }
 
     public function create(Request $request)
