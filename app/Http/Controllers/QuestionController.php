@@ -12,7 +12,24 @@ class QuestionController extends Controller
 
     public function getMany(Request $request)
     {
-        $paginatedResult = Question::with($this->relationship)->orderBy($request->get('sortBy'), $request->get('sortDirection'))->paginate();
+        $paginatedResult = Question::with($this->relationship)->orderBy($request->get('sortBy'), $request->get('sortDirection'));
+
+        if ($request->has('category'))
+        {
+            $paginatedResult = $paginatedResult->where('CategoryID', $request->get('category'));
+        }
+
+        if ($request->has('coverage'))
+        {
+            $paginatedResult = $paginatedResult->where('CoverageID', $request->get('coverage'));
+        }
+
+        if ($request->has('focus'))
+        {
+            $paginatedResult = $paginatedResult->where('FocusID', $request->get('focus'));
+        }
+
+        $paginatedResult = $paginatedResult->paginate();
 
         return response()->json($paginatedResult);
     }
