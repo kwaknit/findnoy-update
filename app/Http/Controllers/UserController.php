@@ -42,7 +42,7 @@ class UserController extends Controller
         // Every user by default has a User role
         $user->roles()->create([
             'UserID' => $user->ID,
-            'RoleID' => 1
+            'RoleID' => 2
         ]);
 
         $data = [

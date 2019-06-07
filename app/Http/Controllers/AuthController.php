@@ -86,6 +86,7 @@ class AuthController extends Controller
     {
         if ($this->guard()->check()) {
             $authenticatedUser = User::with('roles.role:ID,AccessType')->findOrFail($this->guard()->id());
+            $accessType = ($authenticatedUser->roles && count($authenticatedUser->roles) > 0) ? $authenticatedUser->roles[0]->role->AccessType : null;
 
             return response()->json([
                 'user_info' => [
@@ -93,7 +94,7 @@ class AuthController extends Controller
                     'FirstName' => $authenticatedUser->FirstName,
                     'LastName' => $authenticatedUser->LastName,
                     'EmailAddress' => $authenticatedUser->EmailAddress,
-                    'AccessType' => $authenticatedUser->roles[0]->role->AccessType
+                    'AccessType' => $accessType
                 ],
                 'user_session' => [
                     'AccessToken' => $token,
