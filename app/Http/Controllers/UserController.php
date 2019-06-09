@@ -34,12 +34,27 @@ class UserController extends Controller
             'LastName' => 'required',
             'CompanyName' => 'required',
             'EmailAddress' => 'required|email|unique:users,EmailAddress',
+            'Password' => 'required|min:8',
             'City' => 'required',
             'PostalCode' => 'required|size:4',
             'Country' => 'required'
         ]);
 
-        $user = User::create($request->all());
+        $user = User::create([
+            'FirstName'    => $request->FirstName,
+            'MiddleName' => $request->MiddleName,
+            'LastName' => $request->LastName,
+            'CompanyName' => $request->CompanyName,
+            'OfficeNumber' => $request->OfficeNumber,
+            'FaxNumber' => $request->FaxNumber,
+            'HomeNumber' => $request->HomeNumber,
+            'MobileNumber' => $request->MobileNumber,
+            'EmailAddress' => $request->EmailAddress,
+            'Password' => Hash::make($request->Password),
+            'City' => $request->City,
+            'PostalCode' => $request->PostalCode,
+            'Country' => $request->Country,
+        ]);
 
         // Every user by default has a User role
         $user->roles()->create([

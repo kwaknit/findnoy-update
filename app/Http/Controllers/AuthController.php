@@ -15,22 +15,36 @@ class AuthController extends Controller
     {
         $this->validate($request, [
             'FirstName' => 'required',
+            'MiddleName' => 'required',
             'LastName' => 'required',
-            'MobileNumber' => 'size:11|starts_with:09',
+            'CompanyName' => 'required',
             'EmailAddress' => 'required|email|unique:users,EmailAddress',
             'Password' => 'required|min:8',
-            'IsTeaching' => 'required|boolean',
-            'YearGraduated' => 'required|size:4'
+            'City' => 'required',
+            'PostalCode' => 'required|size:4',
+            'Country' => 'required'
         ]);
 
         $user = User::create([
             'FirstName'    => $request->FirstName,
+            'MiddleName' => $request->MiddleName,
             'LastName' => $request->LastName,
+            'CompanyName' => $request->CompanyName,
+            'OfficeNumber' => $request->OfficeNumber,
+            'FaxNumber' => $request->FaxNumber,
+            'HomeNumber' => $request->HomeNumber,
             'MobileNumber' => $request->MobileNumber,
             'EmailAddress' => $request->EmailAddress,
             'Password' => Hash::make($request->Password),
-            'IsTeaching' => $request->IsTeaching,
-            'YearGraduated' => $request->YearGraduated,
+            'City' => $request->City,
+            'PostalCode' => $request->PostalCode,
+            'Country' => $request->Country,
+        ]);
+
+        // Every user by default has a User role
+        $user->roles()->create([
+            'UserID' => $user->ID,
+            'RoleID' => 1
         ]);
 
         $token = $this->generate_token($user);
