@@ -14,7 +14,6 @@ class RolesTableSeeder extends Seeder
     {
         $roles = [
             ['Name' => 'User', 'AccessType' => '1905', 'created_at' => now()],
-            ['Name' => 'Question Administrator', 'AccessType' => '2016', 'created_at' => now()],
             ['Name' => 'Application Administrator', 'AccessType' => '2318', 'created_at' => now()],
             ['Name' => 'System Administrator', 'AccessType' => '3011', 'created_at' => now()]
         ];

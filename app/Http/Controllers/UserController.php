@@ -30,11 +30,13 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'FirstName' => 'required',
+            'MiddleName' => 'required',
             'LastName' => 'required',
-            'MobileNumber' => 'size:11|starts_with:09',
+            'CompanyName' => 'required',
             'EmailAddress' => 'required|email|unique:users,EmailAddress',
-            'IsTeaching' => 'required|boolean',
-            'YearGraduated' => 'required|size:4'
+            'City' => 'required',
+            'PostalCode' => 'required|size:4',
+            'Country' => 'required'
         ]);
 
         $user = User::create($request->all());
@@ -42,7 +44,7 @@ class UserController extends Controller
         // Every user by default has a User role
         $user->roles()->create([
             'UserID' => $user->ID,
-            'RoleID' => 2
+            'RoleID' => 1
         ]);
 
         $data = [
