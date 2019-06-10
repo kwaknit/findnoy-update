@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('MiddleName');
             $table->string('LastName');
             $table->string('CompanyName');
-            $table->string('OfficeNumber')->nullable();
+            $table->string('OfficeNumber');
             $table->string('FaxNumber')->nullable();
             $table->string('HomeNumber')->nullable();
             $table->string('MobileNumber')->nullable();

@@ -18,6 +18,7 @@ class AuthController extends Controller
             'MiddleName' => 'required',
             'LastName' => 'required',
             'CompanyName' => 'required',
+            'OfficeNumber' => 'required',
             'EmailAddress' => 'required|email|unique:users,EmailAddress',
             'Password' => 'required|min:8',
             'City' => 'required',
