@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Http\Controllers\MailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -15,7 +16,6 @@ class AuthController extends Controller
     {
         $this->validate($request, [
             'FirstName' => 'required',
-            'MiddleName' => 'required',
             'LastName' => 'required',
             'CompanyName' => 'required',
             'OfficeNumber' => 'required',
@@ -49,6 +49,21 @@ class AuthController extends Controller
         ]);
 
         $token = $this->generate_token($user);
+
+        MailController::registration_info_email([
+            'FirstName'    => $user->FirstName,
+            'MiddleName' => $user->MiddleName,
+            'LastName' => $user->LastName,
+            'CompanyName' => $user->CompanyName,
+            'OfficeNumber' => $user->OfficeNumber,
+            'FaxNumber' => $user->FaxNumber,
+            'HomeNumber' => $user->HomeNumber,
+            'MobileNumber' => $user->MobileNumber,
+            'EmailAddress' => $user->EmailAddress,
+            'City' => $user->City,
+            'PostalCode' => $user->PostalCode,
+            'Country' => $user->Country,
+        ]);
 
         return $this->respondWithToken($token);
     }
