@@ -112,6 +112,26 @@ class AuthController extends Controller
         return response()->json(['error' => 'refresh_token_error'], 401);
     }
 
+    public function password_reset(Request $request)
+    {
+        $user = User::where('EmailAddress', $request->EmailAddress)->first();
+
+        if ($user) {
+            $radom_password = AuthController::random_password_generator();
+
+            $user->Password = Hash::make($radom_password);
+            $user->save();
+
+            MailController::password_reset_email([
+                'EmailAddress' => $user->EmailAddress,
+                'Name' => "$user->FirstName $user->LastName",
+                'TempPassword' => $radom_password
+            ]);
+        }
+
+        return response()->json('Please check your email for further instructions.', 200);
+    }
+
     private function respondWithToken($token)
     {
         if ($this->guard()->check()) {
@@ -153,6 +173,12 @@ class AuthController extends Controller
     private function guard()
     {
         return \Auth::guard();
+    }
+
+    private static function random_password_generator()
+    {
+        $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
+        return substr(str_shuffle($data), 0, 19);
     }
 
 }

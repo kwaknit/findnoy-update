@@ -14,4 +14,12 @@ class MailController extends Controller
                     ->subject('New User Information | Crestive International');
         });
     }
+
+    public static function password_reset_email($data = [])
+    {
+        Mail::send('emails.password_reset', $data, function($message) use ($data) {
+            $message->to($data['EmailAddress'], $data['Name'])
+                    ->subject('Password Reset | Crestive International');
+        });
+    }
 }

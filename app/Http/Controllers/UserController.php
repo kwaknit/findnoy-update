@@ -76,6 +76,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->update($request->all());
 
+        $user->Password = Hash::make($request->Password);
+        $user->save();
+
         $data = [
             'message' => 'Successfully updated a user',
             'data' => $user
