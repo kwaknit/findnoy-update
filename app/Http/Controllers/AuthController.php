@@ -114,6 +114,10 @@ class AuthController extends Controller
 
     public function password_reset(Request $request)
     {
+        $this->validate($request, [
+            'EmailAddress' => 'required|email'
+        ]);
+
         $user = User::where('EmailAddress', $request->EmailAddress)->first();
 
         if ($user) {
