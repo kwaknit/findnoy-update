@@ -14,7 +14,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable, SoftDeletes;
 
     protected $cascadeDeletes = ['user_roles'];
-    
+
     protected $dates = ['deleted_at'];
     protected $primaryKey = 'ID';
 
@@ -29,19 +29,21 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'FirstName',
-        'MiddleName',
-        'LastName',
-        'CompanyName',
-        'OfficeNumber',
-        'FaxNumber',
-        'HomeNumber',
-        'MobileNumber', 
-        'EmailAddress', 
-        'Password',
-        'City',
-        'PostalCode',
-        'Country'
+        'first_name',
+        'middle_name',
+        'last_name',
+        'birthdate',
+        'birthplace',
+        'gender',
+        'civil_status',
+        'email',
+        'password',
+        'type',
+        'contact_no',
+        'permanent_address',
+        'present_address',
+        'contact_person',
+        'contact_person_no',
     ];
 
     /**
@@ -50,13 +52,13 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'Password'
+        'password'
     ];
 
     /**
      * Get Questions
-     * 
-     * 
+     *
+     *
      */
     public function roles()
     {

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class CreateFiledCaseDocumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('filed_case_documents', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->unique();
-            $table->smallInteger('access_type');
-            $table->softDeletes();
+            $table->bigInteger('filed_case_id')->unsigned();
+            $table->foreign('filed_case_id')->references('id')->on('filed_cases');
+            $table->string('title', 100);
+            $table->text('filename');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -29,6 +31,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('filed_case_documents');
     }
 }
