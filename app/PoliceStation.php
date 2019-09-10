@@ -4,7 +4,7 @@ namespace App;
 
 use App\Base;
 
-class Crime extends Base
+class PoliceStation extends Base
 {
     /**
      * The attributes that are mass assignable.
@@ -13,6 +13,9 @@ class Crime extends Base
      */
     protected $fillable = [
         'name',
-        'description'
+        'number',
+        'address',
+        'contact_no',
+        'chief_police',
     ];
 }

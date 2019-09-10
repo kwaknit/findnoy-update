@@ -8,16 +8,16 @@ class UserRole extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['UserID', 'RoleID'];
+    protected $fillable = ['user_id', 'role_id'];
 
-    protected $hidden = ['UserID', 'RoleID'];
+    protected $hidden = ['user_id', 'role_id'];
 
     /**
      * Get Question
-     * 
+     *
      */
     public function role()
     {
-        return $this->belongsTo(\App\Role::class, 'RoleID', 'ID');
+        return $this->belongsTo(\App\Role::class);
     }
 }

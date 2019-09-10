@@ -13,9 +13,9 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         $roles = [
-            ['name' => 'User', 'access_type' => '1905', 'created_at' => now()],
-            ['name' => 'Application Administrator', 'access_type' => '2318', 'created_at' => now()],
-            ['name' => 'System Administrator', 'access_type' => '3011', 'created_at' => now()]
+            ['id' => '1905', 'name' => 'Civilian', 'access_type' => '1905', 'created_at' => now()],
+            ['id' => '2318', 'name' => 'Field Officer', 'access_type' => '2318', 'created_at' => now()],
+            ['id' => '3011', 'name' => 'Administrator', 'access_type' => '3011', 'created_at' => now()]
         ];
 
         Role::insert($roles);

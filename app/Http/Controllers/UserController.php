@@ -17,80 +17,69 @@ class UserController extends Controller
 
     public function getOne($id)
     {
-        $user = User::with('roles.role:ID')->findOrFail($id);
+        $data = User::with('role.role:id,name')->findOrFail($id);
 
-        return response()->json($user);
-    }
-
-    private function mapID($value)
-    {
-        return 1;
+        return response()->json($data);
     }
 
     public function create(Request $request)
     {
         $this->validate($request, [
-            'FirstName' => 'required',
-            'MiddleName' => 'required',
-            'LastName' => 'required',
-            'CompanyName' => 'required',
-            'EmailAddress' => 'required|email|unique:users,EmailAddress',
-            'Password' => 'required|min:8',
-            'City' => 'required',
-            'PostalCode' => 'required|size:4',
-            'Country' => 'required'
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'birthdate' => 'required',
+            'birthplace' => 'required',
+            'gender' => 'required',
+            'civil_status' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
+            'type' => 'required',
+            'contact_no' => 'required',
+            'permanent_address' => 'required',
+            'present_address' => 'required',
+            'contact_person' => 'required',
+            'contact_person_no' => 'required',
         ]);
 
-        $user = User::create([
-            'FirstName'    => $request->FirstName,
-            'MiddleName' => $request->MiddleName,
-            'LastName' => $request->LastName,
-            'CompanyName' => $request->CompanyName,
-            'OfficeNumber' => $request->OfficeNumber,
-            'FaxNumber' => $request->FaxNumber,
-            'HomeNumber' => $request->HomeNumber,
-            'MobileNumber' => $request->MobileNumber,
-            'EmailAddress' => $request->EmailAddress,
-            'Password' => Hash::make($request->Password),
-            'City' => $request->City,
-            'PostalCode' => $request->PostalCode,
-            'Country' => $request->Country,
-        ]);
+        $toSave = $request->all();
+        $toSave['password'] = Hash::make($toSave['password']);
+
+        $data = User::create($toSave);
 
         // Every user by default has a User role
-        $user->roles()->create([
-            'UserID' => $user->ID,
-            'RoleID' => 1
+        $data->role()->create([
+            'user_id' => $data->id,
+            'role_id' => 1905
         ]);
 
-        $data = [
-            'message' => 'Successfully created a User',
-            'data' => $user
+        $result = [
+            'message' => 'Create Successful',
+            'data' => $data
         ];
 
-        return response()->json($data, 201);
+        return response()->json($result, 201);
     }
 
     public function update($id, Request $request)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->all());
+        $data = User::findOrFail($id);
+        $data->update($request->all());
 
-        $user->Password = Hash::make($request->Password);
-        $user->save();
+        $data->password = Hash::make($request->password);
+        $data->save();
 
-        $data = [
-            'message' => 'Successfully updated a user',
-            'data' => $user
+        $result = [
+            'message' => 'Update Successful',
+            'data' => $data
         ];
 
-        return response()->json($data, 200);
+        return response()->json($result, 200);
     }
 
     public function delete($id)
     {
         User::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return response()->json('Delete Successful', 200);
     }
 
     public function restore($id)
@@ -99,27 +88,26 @@ class UserController extends Controller
             ->findOrFail($id)
             ->restore();
 
-        return response('Restored Successfully', 200);
+        return response('Restore Successful', 200);
     }
 
     public function linkRole($userID, $roleID)
     {
+        $this->unlinkRole($userID, $roleID);
+
         $user = User::findOrFail($userID);
 
-        $user->roles()->create([
-            'UserID' => $user->ID,
-            'RoleID' => $roleID
+        $user->role()->create([
+            'user_id' => $user->id,
+            'role_id' => $roleID
         ]);
 
-        return response()->json("Role Added", 201);
+        return response()->json("Role Changed", 201);
     }
 
-    public function unlinkRole($userID, $roleID)
+    private function unlinkRole($userID, $roleID)
     {
         $user = User::findOrFail($userID);
-
-        $user->roles()->where('RoleID', (int)$roleID)->delete();
-
-        return response()->json(null, 204);
+        $user->role()->where('user_id', (int)$userID)->delete();
     }
 }

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Crime;
+use App\PoliceStation;
 use Illuminate\Http\Request;
 
-class CrimeController extends Controller
+class PoliceStationController extends Controller
 {
     public function getMany(Request $request)
     {
-        $paginatedResult = Crime::orderBy($request->get('sortBy'), $request->get('sortDirection'))->paginate();
+        $paginatedResult = PoliceStation::orderBy($request->get('sortBy'), $request->get('sortDirection'))->paginate();
 
         return response()->json($paginatedResult);
     }
 
     public function getOne($id)
     {
-        $data = Crime::findOrFail($id);
+        $data = PoliceStation::findOrFail($id);
 
         return response()->json($data);
     }
@@ -24,13 +24,14 @@ class CrimeController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:crimes,name',
+            'name' => 'required',
+            'number' => 'required',
+            'address' => 'required',
+            'contact_no' => 'required',
+            'chief_police' => 'required',
         ]);
 
-        $data = Crime::create([
-            'name'    => $request->name,
-            'description' => $request->description
-        ]);
+        $data = PoliceStation::create($request->all());
 
         $result = [
             'message' => 'Create Successful',
@@ -44,9 +45,13 @@ class CrimeController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'number' => 'required',
+            'address' => 'required',
+            'contact_no' => 'required',
+            'chief_police' => 'required',
         ]);
 
-        $data = Crime::findOrFail($id);
+        $data = PoliceStation::findOrFail($id);
         $data->update($request->all());
         $data->save();
 
@@ -60,13 +65,13 @@ class CrimeController extends Controller
 
     public function delete($id)
     {
-        Crime::findOrFail($id)->delete();
+        PoliceStation::findOrFail($id)->delete();
         return response()->json('Delete Successful', 200);
     }
 
     public function restore($id)
     {
-        Crime::withTrashed()
+        PoliceStation::withTrashed()
             ->findOrFail($id)
             ->restore();
 

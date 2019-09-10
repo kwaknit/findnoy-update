@@ -16,7 +16,6 @@ class User extends Authenticatable implements JWTSubject
     protected $cascadeDeletes = ['user_roles'];
 
     protected $dates = ['deleted_at'];
-    protected $primaryKey = 'ID';
 
     /**
      * Override the default per page results
@@ -60,9 +59,9 @@ class User extends Authenticatable implements JWTSubject
      *
      *
      */
-    public function roles()
+    public function role()
     {
-        return $this->hasMany(\App\UserRole::class, 'UserID', 'ID');
+        return $this->hasOne(\App\UserRole::class);
     }
 
     public function getJWTIdentifier()

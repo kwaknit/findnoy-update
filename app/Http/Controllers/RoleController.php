@@ -21,14 +21,14 @@ class RoleController extends Controller
 
     public function getSimpleList()
     {
-        return response()->json(Role::all('ID', 'Name', 'AccessType'));
+        return response()->json(Role::all('id', 'name', 'access_type'));
     }
 
     public function create(Request $request)
     {
         $this->validate($request, [
-            'Name' => 'required',
-            'AccessType' => 'required',
+            'name' => 'required',
+            'access_type' => 'required',
         ]);
 
         $role = Role::create($request->all());
