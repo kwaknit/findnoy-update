@@ -65,5 +65,35 @@ Route::prefix('v1')->group(function () {
         Route::delete('{id}', 'PoliceStationController@delete');
         Route::post('{id}', 'PoliceStationController@restore');
     });
+
+    // Filed Cases
+    Route::prefix('filed-cases')->group(function () {
+        Route::get('', 'FiledCaseController@getMany');
+        Route::get('{id}', 'FiledCaseController@getOne');
+        Route::post('', 'FiledCaseController@create');
+        Route::put('{id}', 'FiledCaseController@update');
+        Route::delete('{id}', 'FiledCaseController@delete');
+        Route::post('{id}', 'FiledCaseController@restore');
+    });
+
+    // Committed Crimes
+    Route::prefix('committed-crimes')->group(function () {
+        Route::get('', 'CommittedCrimeController@getMany');
+        Route::get('{id}', 'CommittedCrimeController@getOne');
+        Route::post('', 'CommittedCrimeController@create');
+        Route::put('{id}', 'CommittedCrimeController@update');
+        Route::delete('{id}', 'CommittedCrimeController@delete');
+        Route::post('{id}', 'CommittedCrimeController@restore');
+    });
+
+    // Committed Crimes
+    Route::prefix('filed-case-documents')->group(function () {
+        Route::get('', 'FiledCaseDocumentController@getMany');
+        Route::get('{id}', 'FiledCaseDocumentController@getOne');
+        Route::post('', 'FiledCaseDocumentController@create');
+        Route::put('{id}', 'FiledCaseDocumentController@update');
+        Route::delete('{id}', 'FiledCaseDocumentController@delete');
+        Route::post('{id}', 'FiledCaseDocumentController@restore');
+    });
 });
 
