@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Controllers\AuthController;
 
 class UserController extends Controller
 {
@@ -32,7 +33,6 @@ class UserController extends Controller
             'gender' => 'required',
             'civil_status' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
             'type' => 'required',
             'contact_no' => 'required',
             'permanent_address' => 'required',
@@ -42,7 +42,7 @@ class UserController extends Controller
         ]);
 
         $toSave = $request->all();
-        $toSave['password'] = Hash::make($toSave['password']);
+        $toSave['password'] = Hash::make(123123);
 
         $data = User::create($toSave);
 
@@ -64,9 +64,6 @@ class UserController extends Controller
     {
         $data = User::findOrFail($id);
         $data->update($request->all());
-
-        $data->password = Hash::make($request->password);
-        $data->save();
 
         $result = [
             'message' => 'Update Successful',

@@ -71,19 +71,19 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'EmailAddress' => 'required|email',
-            'Password' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-        $user = User::where('EmailAddress', $request->EmailAddress)->first();
+        $user = User::where('email', $request->email)->first();
 
         if ($user) {
-            if (password_verify($request->Password, $user->Password)) {
+            if (password_verify($request->password, $user->password)) {
                 if ($token = $this->generate_token($user)) {
                     return $this->respondWithToken($token);
                 }
-            } 
-        } 
+            }
+        }
 
         return response()->json(['message' => 'Email Address or Password is invalid'], 401);
     }
@@ -139,8 +139,8 @@ class AuthController extends Controller
     private function respondWithToken($token)
     {
         if ($this->guard()->check()) {
-            $authenticatedUser = User::with('roles.role:ID,AccessType')->findOrFail($this->guard()->id());
-            $accessType = ($authenticatedUser->roles && count($authenticatedUser->roles) > 0) ? $authenticatedUser->roles[0]->role->AccessType : null;
+            $authenticatedUser = User::with('role.role:id,access_type')->findOrFail($this->guard()->id());
+            $accessType = $authenticatedUser->role->access_type;
 
             return response()->json([
                 'user_info' => [
@@ -156,20 +156,20 @@ class AuthController extends Controller
                     'ExpiresIn'   => auth()->factory()->getTTL() * 600
                 ]
             ]);
-        }        
-    }    
+        }
+    }
 
     /**
      * Generate Token
-     * 
+     *
      * @param \App\User
-     * 
+     *
      * @return string
      */
     private function generate_token(User $user)
     {
         return auth()->login($user);
-    }    
+    }
 
     /**
      * Return Auth guard
@@ -179,7 +179,7 @@ class AuthController extends Controller
         return \Auth::guard();
     }
 
-    private static function random_password_generator()
+    public static function random_password_generator()
     {
         $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
         return substr(str_shuffle($data), 0, 19);
