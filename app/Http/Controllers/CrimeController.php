@@ -21,6 +21,11 @@ class CrimeController extends Controller
         return response()->json($data);
     }
 
+    public function getSimpleList()
+    {
+        return response()->json(Crime::all('id', 'name'));
+    }
+
     public function create(Request $request)
     {
         $this->validate($request, [

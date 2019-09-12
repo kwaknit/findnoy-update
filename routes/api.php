@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function () {
     // Users
     Route::prefix('users')->group(function () {
         Route::get('', 'UserController@getMany');
+        Route::get('list', 'UserController@getSimpleList');
         Route::get('{id}', 'UserController@getOne');
         Route::post('', 'UserController@create');
         Route::put('{id}', 'UserController@update');
@@ -49,6 +50,7 @@ Route::prefix('v1')->group(function () {
     // Crimes
     Route::prefix('crimes')->group(function () {
         Route::get('', 'CrimeController@getMany');
+        Route::get('list', 'CrimeController@getSimpleList');
         Route::get('{id}', 'CrimeController@getOne');
         Route::post('', 'CrimeController@create');
         Route::put('{id}', 'CrimeController@update');
@@ -59,6 +61,7 @@ Route::prefix('v1')->group(function () {
     // Police Stations
     Route::prefix('police-stations')->group(function () {
         Route::get('', 'PoliceStationController@getMany');
+        Route::get('list', 'PoliceStationController@getSimpleList');
         Route::get('{id}', 'PoliceStationController@getOne');
         Route::post('', 'PoliceStationController@create');
         Route::put('{id}', 'PoliceStationController@update');
@@ -69,6 +72,7 @@ Route::prefix('v1')->group(function () {
     // Filed Cases
     Route::prefix('filed-cases')->group(function () {
         Route::get('', 'FiledCaseController@getMany');
+        Route::get('list', 'FiledCaseController@getSimpleList');
         Route::get('{id}', 'FiledCaseController@getOne');
         Route::post('', 'FiledCaseController@create');
         Route::put('{id}', 'FiledCaseController@update');

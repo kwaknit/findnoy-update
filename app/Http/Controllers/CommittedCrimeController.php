@@ -9,7 +9,7 @@ class CommittedCrimeController extends Controller
 {
     public function getMany(Request $request)
     {
-        $paginatedResult = CommittedCrime::orderBy($request->get('sortBy'), $request->get('sortDirection'))->paginate();
+        $paginatedResult = CommittedCrime::with(['filed_case:id,title', 'crime:id,name'])->orderBy($request->get('sortBy'), $request->get('sortDirection'))->paginate();
 
         return response()->json($paginatedResult);
     }

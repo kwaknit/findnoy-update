@@ -16,4 +16,14 @@ class CommittedCrime extends Base
         'filed_case_id',
         'crime_id'
     ];
+
+    public function filed_case()
+    {
+        return $this->belongsTo(\App\FiledCase::class);
+    }
+
+    public function crime()
+    {
+        return $this->belongsTo(\App\Crime::class);
+    }
 }

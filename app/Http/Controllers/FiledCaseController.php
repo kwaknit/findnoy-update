@@ -9,9 +9,14 @@ class FiledCaseController extends Controller
 {
     public function getMany(Request $request)
     {
-        $paginatedResult = FiledCase::orderBy($request->get('sortBy'), $request->get('sortDirection'))->paginate();
+        $paginatedResult = FiledCase::with('assigned_officer:id,first_name,last_name')->orderBy($request->get('sortBy'), $request->get('sortDirection'))->paginate();
 
         return response()->json($paginatedResult);
+    }
+
+    public function getSimpleList()
+    {
+        return response()->json(FiledCase::all('id', 'title as name'));
     }
 
     public function getOne($id)

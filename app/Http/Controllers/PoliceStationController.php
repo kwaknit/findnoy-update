@@ -21,6 +21,11 @@ class PoliceStationController extends Controller
         return response()->json($data);
     }
 
+    public function getSimpleList()
+    {
+        return response()->json(PoliceStation::all('id', 'name'));
+    }
+
     public function create(Request $request)
     {
         $this->validate($request, [

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AuthController;
 
 class UserController extends Controller
@@ -21,6 +22,11 @@ class UserController extends Controller
         $data = User::with('role.role:id,name')->findOrFail($id);
 
         return response()->json($data);
+    }
+
+    public function getSimpleList()
+    {
+        return response()->json(User::select('id', DB::raw("CONCAT(first_name, ' ', last_name) as name"))->where('type', 'field_officer')->get());
     }
 
     public function create(Request $request)

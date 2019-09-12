@@ -26,4 +26,9 @@ class FiledCase extends Base
         'privacy',
         'police_station_id'
     ];
+
+    public function assigned_officer()
+    {
+        return $this->belongsTo(\App\User::class, 'assigned_to_user_id', 'id');
+    }
 }
