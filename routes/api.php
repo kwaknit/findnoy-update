@@ -78,6 +78,7 @@ Route::prefix('v1')->group(function () {
         Route::put('{id}', 'FiledCaseController@update');
         Route::delete('{id}', 'FiledCaseController@delete');
         Route::post('{id}', 'FiledCaseController@restore');
+        Route::post('{id}/action/upload', 'FiledCaseController@upload');
     });
 
     // Committed Crimes

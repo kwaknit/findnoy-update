@@ -50,6 +50,8 @@ class UserController extends Controller
         $toSave = $request->all();
         $toSave['password'] = Hash::make(123123);
 
+        // email password
+
         $data = User::create($toSave);
 
         // Every user by default has a User role

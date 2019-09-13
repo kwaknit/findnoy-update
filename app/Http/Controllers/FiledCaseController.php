@@ -94,4 +94,11 @@ class FiledCaseController extends Controller
 
         return response('Restore Successful', 200);
     }
+
+    public function upload(Request $request, $id)
+    {
+        $uploaded_file = $request->file("file");
+        $file_extension = $uploaded_file->extension();
+        $folder = "Filed Case Documents";
+    }
 }
