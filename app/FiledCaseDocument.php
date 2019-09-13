@@ -13,7 +13,13 @@ class FiledCaseDocument extends Base
      */
     protected $fillable = [
         'title',
+        'path',
         'filename',
         'filed_case_id'
     ];
+
+    public function filed_case()
+    {
+        return $this->belongsTo(\App\FiledCase::class);
+    }
 }

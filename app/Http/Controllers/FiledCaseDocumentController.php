@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\FiledCaseDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FiledCaseDocumentController extends Controller
 {
@@ -25,7 +27,6 @@ class FiledCaseDocumentController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'filename' => 'required',
             'filed_case_id' => 'required|exists:filed_cases,id'
         ]);
 
@@ -43,7 +44,6 @@ class FiledCaseDocumentController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'filename' => 'required',
             'filed_case_id' => 'required|exists:filed_cases,id'
         ]);
 
@@ -72,5 +72,36 @@ class FiledCaseDocumentController extends Controller
             ->restore();
 
         return response('Restore Successful', 200);
+    }
+
+    public function upload(Request $request, $id)
+    {
+
+        $file_data = FiledCaseDocument::findOrFail($id);
+        $uploaded_file = $request->file("file");
+        $file_extension = $uploaded_file->extension();
+        $folder = $file_data->filed_case->title;
+        $file_name = "$file_data->title.$file_extension";
+
+        if (Storage::disk("local")->exists("$folder/$file_name"))
+        {
+            return response()->json("$file_name already exists.", 200);
+        }
+
+        if ($path = Storage::putFileAs($folder, $request->file("file"), $file_name, 'public'))
+        {
+            $file_data->path = $path;
+            $file_data->filename = $file_name;
+            $file_data->save();
+
+            $data = [
+                "message" => "$file_name was uploaded successfully.",
+                "data" => $file_name
+            ];
+
+            return response()->json($data, 200);
+        }
+
+        return response("There something wrong in the process. Please contact administrator", 200);
     }
 }
