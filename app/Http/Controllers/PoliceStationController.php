@@ -30,7 +30,6 @@ class PoliceStationController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'number' => 'required',
             'address' => 'required',
             'contact_no' => 'required',
             'chief_police' => 'required',
@@ -50,7 +49,6 @@ class PoliceStationController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'number' => 'required',
             'address' => 'required',
             'contact_no' => 'required',
             'chief_police' => 'required',
