@@ -29,7 +29,7 @@ class FiledCaseController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required',
+            'title' => 'required|unique:filed_cases,title',
             'description' => 'required',
             'type' => 'required|in:wanted_criminal,missing_person,carnapped_vehicle',
             'full_name' => 'required',

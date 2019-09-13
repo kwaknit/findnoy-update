@@ -16,7 +16,7 @@ class CreatePoliceStationsTable extends Migration
         Schema::create('police_stations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 20);
-            $table->string('number', 10);
+            $table->string('number')->nullable();
             $table->string('address', 100);
             $table->string('contact_no', 20);
             $table->string('chief_police', 80);
