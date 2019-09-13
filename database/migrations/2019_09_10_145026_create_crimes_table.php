@@ -16,7 +16,7 @@ class CreateCrimesTable extends Migration
         Schema::create('crimes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 20);
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

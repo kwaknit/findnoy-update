@@ -19,7 +19,7 @@ class CreateCommittedCrimesTable extends Migration
             $table->foreign('filed_case_id')->references('id')->on('filed_cases');
             $table->bigInteger('crime_id')->unsigned();
             $table->foreign('crime_id')->references('id')->on('crimes');
-            $table->string('name', 20);
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });
