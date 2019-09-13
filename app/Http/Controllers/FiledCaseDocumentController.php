@@ -96,7 +96,7 @@ class FiledCaseDocumentController extends Controller
 
             $data = [
                 "message" => "$file_name was uploaded successfully.",
-                "data" => $file_name
+                "data" => $file_data
             ];
 
             return response()->json($data, 200);

@@ -31,4 +31,9 @@ class FiledCase extends Base
     {
         return $this->belongsTo(\App\User::class, 'assigned_to_user_id', 'id');
     }
+
+    public function documents()
+    {
+        return $this->hasMany(\App\FiledCaseDocument::class);
+    }
 }

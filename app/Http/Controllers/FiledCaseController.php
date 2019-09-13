@@ -21,7 +21,7 @@ class FiledCaseController extends Controller
 
     public function getOne($id)
     {
-        $data = FiledCase::findOrFail($id);
+        $data = FiledCase::with('documents:id,title,filed_case_id')->findOrFail($id);
 
         return response()->json($data);
     }
