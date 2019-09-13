@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MailController;
 
 class UserController extends Controller
 {
@@ -47,8 +48,10 @@ class UserController extends Controller
             'contact_person_no' => 'required',
         ]);
 
+        $password = Hash::make(AuthController::random_password_generator());
+
         $toSave = $request->all();
-        $toSave['password'] = Hash::make(123123);
+        $toSave['password'] = $password;
 
         // email password
 
@@ -58,6 +61,13 @@ class UserController extends Controller
         $data->role()->create([
             'user_id' => $data->id,
             'role_id' => 1905
+        ]);
+
+        MailController::registration_info_email([
+            'email' => $request->email,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'password' => $password
         ]);
 
         $result = [

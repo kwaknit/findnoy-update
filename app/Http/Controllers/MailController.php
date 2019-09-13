@@ -9,9 +9,9 @@ class MailController extends Controller
 {
     public static function registration_info_email($data = [])
     {
-        Mail::send('emails.registration_info', $data, function($message) {
-            $message->to('crestiveinternational@gmail.com', 'Michelle Cabanas')
-                    ->subject('New User Information | Crestive International');
+        Mail::send('emails.registration_info', $data, function($message) use ($data) {
+            $message->to($data['email'], $data['first_name'] . ' ' . $data['last_name'])
+                    ->subject('Welcome | FindNoy');
         });
     }
 
