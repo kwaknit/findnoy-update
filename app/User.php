@@ -43,7 +43,15 @@ class User extends Authenticatable implements JWTSubject
         'present_address',
         'contact_person',
         'contact_person_no',
+        'latitude',
+        'longitude',
+        'police_station_id'
     ];
+
+    // protected $casts = [
+    //     'latitude' => 'integer',
+    //     'longitude' => 'integer'
+    // ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -62,6 +70,11 @@ class User extends Authenticatable implements JWTSubject
     public function role()
     {
         return $this->hasOne(\App\UserRole::class);
+    }
+
+    public function police_station()
+    {
+        return $this->belongsTo(\App\PoliceStation::class);
     }
 
     public function getJWTIdentifier()

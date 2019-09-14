@@ -20,14 +20,14 @@ class UserController extends Controller
 
     public function getOne($id)
     {
-        $data = User::with('role.role:id,name')->findOrFail($id);
+        $data = User::with(['role.role:id,name', 'police_station:id,name'])->findOrFail($id);
 
         return response()->json($data);
     }
 
     public function getSimpleList()
     {
-        return response()->json(User::select('id', DB::raw("CONCAT(first_name, ' ', last_name) as name"))->where('type', 'field_officer')->get());
+        return response()->json(User::select('id', DB::raw("CONCAT(first_name, ' ', last_name) as name"), 'latitude', 'longitude')->where('type', 'field_officer')->get());
     }
 
     public function create(Request $request)
