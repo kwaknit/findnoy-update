@@ -96,9 +96,10 @@ Route::prefix('v1')->group(function () {
         Route::get('{id}', 'FiledCaseDocumentController@getOne');
         Route::post('', 'FiledCaseDocumentController@create');
         Route::put('{id}', 'FiledCaseDocumentController@update');
-        Route::delete('{id}', 'FiledCaseDocumentController@delete');
+        Route::delete('{id}', 'FiledCaseDocumentController@deleteFile');
         Route::post('{id}', 'FiledCaseDocumentController@restore');
         Route::post('{id}/action/upload', 'FiledCaseDocumentController@upload');
+        Route::get('{id}/action/download', 'FiledCaseDocumentController@download');
     });
 });
 

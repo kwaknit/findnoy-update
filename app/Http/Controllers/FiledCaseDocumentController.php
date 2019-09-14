@@ -104,4 +104,37 @@ class FiledCaseDocumentController extends Controller
 
         return response("There something wrong in the process. Please contact administrator", 200);
     }
+
+    public function download($id)
+    {
+        $file_data = FiledCaseDocument::findOrFail($id);
+        $path = $file_data->path;
+
+        if (!Storage::disk("local")->exists($path))
+        {
+            return response()->json('File no longer exists.', 200);
+        }
+
+        return Storage::download($path);
+    }
+
+    public function deleteFile($id)
+    {
+        $file_data = FiledCaseDocument::findOrFail($id);
+        $path = $file_data->path;
+
+        if (!Storage::disk("local")->exists($path))
+        {
+            return response()->json('File no longer exists.', 200);
+        }
+
+        try {
+            Storage::delete($path);
+            $file_data->forceDelete();
+
+            return response()->json("File was successfully deleted.");
+        } catch (NotFoundHttpException $e) {
+            return response()->json('File no longer exists.', 204);
+        }
+    }
 }
