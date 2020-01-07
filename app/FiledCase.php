@@ -23,8 +23,7 @@ class FiledCase extends Base
         'issued_at',
         'closed_at',
         'assigned_to_user_id',
-        'privacy',
-        'police_station_id'
+        'privacy'
     ];
 
     public function assigned_officer()

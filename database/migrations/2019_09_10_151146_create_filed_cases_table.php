@@ -28,8 +28,6 @@ class CreateFiledCasesTable extends Migration
             $table->bigInteger('assigned_to_user_id')->unsigned();
             $table->foreign('assigned_to_user_id')->references('id')->on('users');
             $table->boolean('privacy')->default(0);
-            $table->bigInteger('police_station_id')->unsigned();
-            $table->foreign('police_station_id')->references('id')->on('police_stations');
             $table->timestamps();
             $table->softDeletes();
         });
