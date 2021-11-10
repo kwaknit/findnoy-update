@@ -78,6 +78,8 @@ Route::prefix('v1')->group(function () {
         Route::get('{last_seen_place}', 'FiledCaseController@getOne');
         Route::get('{description}', 'FiledCaseContro5ller@getOne');
         Route::get('{type}', 'FiledCaseController@getOne');
+        Route::get('{last_seen_date}', 'FiledCaseController@getOne');
+        Route::get('{status}', 'FiledCaseController@getOne');
         Route::post('', 'FiledCaseController@create');
         Route::put('{id}', 'FiledCaseController@update');
         Route::delete('{id}', 'FiledCaseController@delete');
