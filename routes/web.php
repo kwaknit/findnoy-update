@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/firebase','FirebaseController@index');
+Route::get('firebase-get-data', 'FirebaseController@getData');

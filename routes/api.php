@@ -74,6 +74,10 @@ Route::prefix('v1')->group(function () {
         Route::get('', 'FiledCaseController@getMany');
         Route::get('list', 'FiledCaseController@getSimpleList');
         Route::get('{id}', 'FiledCaseController@getOne');
+        Route::get('{full_name}', 'FiledCaseController@getOne');
+        Route::get('{last_seen_place}', 'FiledCaseController@getOne');
+        Route::get('{description}', 'FiledCaseController@getOne');
+        Route::get('{type}', 'FiledCaseController@getOne');
         Route::post('', 'FiledCaseController@create');
         Route::put('{id}', 'FiledCaseController@update');
         Route::delete('{id}', 'FiledCaseController@delete');
